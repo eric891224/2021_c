@@ -1,6 +1,6 @@
 # 2021_c
 
-## pthread 筆記
+# pthread 筆記
 
     #include <stdio.h>
     #include <pthread.h>
@@ -85,3 +85,76 @@
 
         return 0;
     }
+
+###
+# GCC編譯指令
+一c檔案hello.c如下  
+
+    // hello.c
+    #include <stdio.h>
+    int main() {
+      printf("Hello, world!\n");
+      return 0;
+    }
+    
+### 以GCC直接編譯(output為a.out)
+
+    gcc hello.c >> a.out
+    ./a.out >> Hello, world!
+
+### 輸出特定檔名
+
+    gcc -o hello hello.c >> hello
+    hello >> Hello, world!
+    
+若要編譯c++檔案，以g++代替gcc
+
+### 除錯用參數(-Wall)；使用gdb除錯(-g)
+
+    # 顯示警告訊息、加入除錯資訊
+    g++ -Wall -g -o hello hello.cpp
+    
+### 定義聚集Macro(待補)
+
+### 只編譯不連結(-c)
+
+    # 僅編譯、不連結，建立 obj 檔案
+    gcc -c hello.c
+
+若要進行連結(-o)
+
+    # 連結產生執行檔
+    gcc -o hello hello.o
+    
+例子
+
+    # 編譯個別 C 檔案
+    gcc -c a.c
+    gcc -c b.c
+    gcc -c c.c
+
+    # 連結
+    gcc -o myapp a.o b.o c.o
+    
+### CPU最佳化
+根據 CPU 的架構，進行最佳化處理，編譯出效能更好的執行檔
+-O(跟-O1 相同)、-O2 與 -O3，數字越高代表最佳化的程度越高
+
+    # 進行最佳化
+    gcc -O2 -o hello hello.c
+    
+### 連結標頭檔
+若有額外的標頭檔路徑，用-I增加路徑
+
+    # 新增標頭檔搜尋路徑
+    gcc -I/home/gtwang/include -o hello hello.c
+    
+### 連結函式庫
+若有一個libsum.a 函式庫放在 /home/gtwang/lib 目錄下
+#### 1. 將函式庫當作一般檔案進行處理
+
+    gcc -o hello hello.c /home/gtwang/lib/libsum.a
+    
+#### 2. 以-L搜索函式庫路徑；-l為函式庫檔名(去掉lib)
+
+    gcc -o hello -L/home/gtwang/lib -lsum hello.c
